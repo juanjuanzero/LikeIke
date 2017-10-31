@@ -1,31 +1,50 @@
-﻿@{
+﻿@model LikeIke.Models.TaskListViewModel
+
+@{
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+<div class=" col-md-12 row">
+        
+    <h3>Important And Urgent Stuff</h3>
+    <div class="col-sm-12 row">
+        <div class=" col-sm-8 checkbox">
+            <label><input type="checkbox" value="">Finish Code Louisville Project Finish Code Louisville Project</label>
+        </div>
+            <div class="col-sm-4 btn-group">
+            <button type="button" class="btn btn-primary btn-sm">Edit</button>
+            <button type="button" class="btn btn-danger btn-sm">Del</button>
+        </div>
+        <hr />
+    </div>
+
+    <div class="col-sm-12 row">
+        <div class=" col-sm-8 checkbox">
+            <label><input type="checkbox" value="">Finish Code Louisville Project Finish Code Louisville Project</label>
+        </div>
+        <div class="col-sm-4 btn-group">
+            <button type="button" class="btn btn-primary btn-sm">Edit</button>
+            <button type="button" class="btn btn-danger btn-sm">Del</button>
+        </div>
+        <hr />
+    </div>
+    @for (var i = 0; i < Model.TaskList.Count; i++)
+    {
+        <div class="col-sm-12 row">
+            <div class=" col-sm-8 checkbox">
+                <label><input type="checkbox" value="">@Model.TaskList[i].TaskName</label>
+            </div>
+            <div class="col-sm-4 btn-group">
+                @Html.ActionLink("Review", "TaskDetail", new {id = Model.TaskList[i].TaskId }, new { @class="btn btn-info btn-sm"})
+                <button type="button" class="btn btn-primary btn-sm">Edit</button>
+                <button type="button" class="btn btn-danger btn-sm">Del</button>
+            </div>
+            <hr />
+        </div>
+    }
+
+
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+@*Added the ATmodel connection to connect the HomeController with the Index.cshtml page. It is taking the TaskListViewModel which is what is being passed into the view*@
+@*Note: passing in the id parameter of the element is important for the methods to be able to connect particular elements from one another.*@
