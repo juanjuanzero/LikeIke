@@ -61,13 +61,55 @@ namespace LikeIke.Controllers
 
                 };
 
-                ViewBag.Title = "Review Task";
+                ViewBag.Title = "Review a Task";
 
                 return View(_taskViewModel);
             }
 
             return new HttpNotFoundResult();
         }
+
+
+        /// When this method is called from the Index view of Home by hitting the "Edit" button it will create an empty ViewModel and push it to the  AddEditTask view.
+
+        public ActionResult AddTask()
+        {
+            var _addTaskViewModel = new TaskViewModel();
+            //{
+            //    DateDue = DateTime.Today.ToShortDateString()
+            //};
+
+            
+
+            return View("AddEditTask", _addTaskViewModel);
+            
+
+        }
+
+        //when this method is called from the AddEditTask view by clicking the "add" button. it will take the elements from the view, create a new obj of type Task and add it to the list called TaskList. Also increment the id by 1
+        [HttpPost]
+        public ActionResult TaskAdd(TaskViewModel _taskAddViewModel)
+        {
+            var nextId = TaskList.Count()+1;
+
+            var _taskAdd = new Task
+            {
+                TaskId = nextId,
+                TaskName = _taskAddViewModel.TaskName,
+                DateDue = _taskAddViewModel.DateDue,
+                Description = _taskAddViewModel.Description,
+                Duration = _taskAddViewModel.Duration,
+                Important = _taskAddViewModel.Important
+            };
+
+            TaskList.Add(_taskAdd);
+
+
+            return RedirectToAction("Index");
+        }
+
+        //CRUD Operation: EDIT/UPDATE. When clicking on the "edit" button from the index view are are going to 
+
 
 
         //Open the AddEditTask cshtml task when this is called.
