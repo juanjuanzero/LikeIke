@@ -12,11 +12,11 @@ namespace LikeIke.Controllers
         //Seed data
         public static List<Task> TaskList = new List<Task>
         {
-            new Task {TaskId=1, TaskName="First Task", DateDue="10-30-2017", Description="My first task", Duration=10.5 , Important=true},
-            new Task {TaskId=2, TaskName="Second Task", DateDue="11-01-2017", Description="My second task", Duration=10.5,  Important=true },
-            new Task {TaskId=3, TaskName="Third Task", DateDue="11-03-2017", Description="My third task", Duration=10.5,  Important=true },
-            new Task {TaskId=4, TaskName="Fourth Task", DateDue="11-04-2017", Description="My fourt task", Duration=10.5 ,  Important=true},
-            new Task {TaskId=5, TaskName="Fifth Task", DateDue="11-05-2017", Description="My fifth task", Duration=10.5, Important=true }
+            new Task {TaskId=1, TaskName="First Task", DateDue="10/30/2017", Description="My first task", Duration=10.5 , Important=true},
+            new Task {TaskId=2, TaskName="Second Task", DateDue="11/01/2017", Description="My second task", Duration=10.5,  Important=true },
+            new Task {TaskId=3, TaskName="Third Task", DateDue="11/03/2017", Description="My third task", Duration=10.5,  Important=true },
+            new Task {TaskId=4, TaskName="Fourth Task", DateDue="11/04/2017", Description="My fourt task", Duration=10.5 ,  Important=true},
+            new Task {TaskId=5, TaskName="Fifth Task", DateDue="11/05/2017", Description="My fifth task", Duration=10.5, Important=true }
         };
 
         //STOCK LANGUAGE FROM MVC TEMPLATE IS BELOW
@@ -76,12 +76,12 @@ namespace LikeIke.Controllers
         {
             var _addTaskViewModel = new TaskViewModel();
             //{
-            //    DateDue = DateTime.Today.ToShortDateString()
+            //    _addTaskViewModel.DateDue = DateTime.Today.ToShortDateString();
             //};
 
-            
+            ViewBag.Mode = "Add";
 
-            return View("AddEditTask", _addTaskViewModel);
+            return View("AddEditTask",_addTaskViewModel);
             
 
         }
@@ -108,7 +108,51 @@ namespace LikeIke.Controllers
             return RedirectToAction("Index");
         }
 
-        //CRUD Operation: EDIT/UPDATE. When clicking on the "edit" button from the index view are are going to 
+        //CRUD Operation: EDIT/UPDATE. When clicking on the "edit" button from the index view are going to find a matching id from the list of tasks, check if it is null, then set the matching tasks to a viewmodel then pass the obj to the AddEditTask viewmodel
+
+        public ActionResult EditTask(int id)
+        {
+            var _task = TaskList.SingleOrDefault(t => t.TaskId == id);
+
+            if(_task != null)
+            {
+                var _editTaskViewModel = new TaskViewModel
+                {
+                    TaskId = _task.TaskId,
+                    TaskName = _task.TaskName,
+                    DateDue = _task.DateDue,
+                    Description = _task.Description,
+                    Duration = _task.Duration,
+                    Important = _task.Important
+                };
+
+                return View("AddEditTask", _editTaskViewModel);
+            }
+
+            return new HttpNotFoundResult();
+        }
+
+        //This method takes in submissions from the form in the AddEditTask view and UPDATES the records in the list with the matching id that the viewmodel has.
+
+        [HttpPost]
+        public ActionResult TaskEdit(TaskViewModel _taskEditViewModel)
+        {
+            var _task = TaskList.SingleOrDefault(t => t.TaskId == _taskEditViewModel.TaskId);
+
+            if(_task != null)
+            {
+                //if there is a match set the values equal to the edit fields in the view model.
+                _task.TaskName = _taskEditViewModel.TaskName;
+                _task.DateDue = _taskEditViewModel.DateDue;
+                _task.Description = _taskEditViewModel.Description;
+                _task.Duration = _taskEditViewModel.Duration;
+                _task.Important = _taskEditViewModel.Important;
+
+                return RedirectToAction("Index");
+            }
+
+            return new HttpNotFoundResult();
+        }
 
 
 

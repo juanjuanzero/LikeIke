@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Fire Drill</title>
     @Styles.Render("~/Content/css")
+    <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
@@ -25,7 +26,8 @@
                     @*<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                     
                 </ul>
-                <a>@Html.ActionLink("Add a Task", "AddEditTask", "AddTask", new { @class = "navbar-btn btn btn-success" })</a>
+                
+                <a>@Html.ActionLink("Add a Task Yo", "AddTask", null, new { @class ="navbar-btn btn btn-danger"})</a>
             </div>
         </div>
     </div>
