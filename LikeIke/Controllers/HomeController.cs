@@ -12,11 +12,11 @@ namespace LikeIke.Controllers
         //Seed data
         public static List<Task> TaskList = new List<Task>
         {
-            new Task {TaskId=1, TaskName="First Task", DateDue="10-30-2017", Description="My second task", Duration=10.5 , Important=true},
-            new Task {TaskId=2, TaskName="Second Task", DateDue="11-01-2017", Description="My third task", Duration=10.5,  Important=true },
-            new Task {TaskId=3, TaskName="Third Task", DateDue="11-03-2017", Description="My fourth task", Duration=10.5,  Important=true },
-            new Task {TaskId=4, TaskName="Fourth Task", DateDue="11-04-2017", Description="My fifth task", Duration=10.5 ,  Important=true},
-            new Task {TaskId=5, TaskName="Fifth Task", DateDue="11-05-2017", Description="My  task", Duration=10.5, Important=true }
+            new Task {TaskId=1, TaskName="First Task", DateDue="10-30-2017", Description="My first task", Duration=10.5 , Important=true},
+            new Task {TaskId=2, TaskName="Second Task", DateDue="11-01-2017", Description="My second task", Duration=10.5,  Important=true },
+            new Task {TaskId=3, TaskName="Third Task", DateDue="11-03-2017", Description="My third task", Duration=10.5,  Important=true },
+            new Task {TaskId=4, TaskName="Fourth Task", DateDue="11-04-2017", Description="My fourt task", Duration=10.5 ,  Important=true},
+            new Task {TaskId=5, TaskName="Fifth Task", DateDue="11-05-2017", Description="My fifth task", Duration=10.5, Important=true }
         };
 
         //STOCK LANGUAGE FROM MVC TEMPLATE IS BELOW
