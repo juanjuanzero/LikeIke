@@ -12,11 +12,11 @@ namespace LikeIke.Controllers
         //Seed data
         public static List<Task> TaskList = new List<Task>
         {
-            new Task {TaskId=1, TaskName="First Task", DateDue="10/30/2017", Description="My first task", Duration=10.5 , Important=true, Complete=false},
-            new Task {TaskId=2, TaskName="Second Task", DateDue="11/01/2017", Description="My second task", Duration=10.5,  Important=true, Complete=false },
-            new Task {TaskId=3, TaskName="Third Task", DateDue="11/03/2017", Description="My third task", Duration=10.5,  Important=true, Complete=true },
-            new Task {TaskId=4, TaskName="Fourth Task", DateDue="11/04/2017", Description="My fourt task", Duration=10.5 ,  Important=true, Complete=false },
-            new Task {TaskId=5, TaskName="Fifth Task", DateDue="11/05/2017", Description="My fifth task", Duration=10.5, Important=true, Complete=false }
+            //new Task {TaskId=1, TaskName="First Task", DateDue="10/30/2017", Description="My first task", Duration=10.5 , Important=true, Complete=false},
+            //new Task {TaskId=2, TaskName="Second Task", DateDue="11/01/2017", Description="My second task", Duration=10.5,  Important=true, Complete=false },
+            //new Task {TaskId=3, TaskName="Third Task", DateDue="11/03/2017", Description="My third task", Duration=10.5,  Important=true, Complete=true },
+            //new Task {TaskId=4, TaskName="Fourth Task", DateDue="11/04/2017", Description="My fourt task", Duration=10.5 ,  Important=true, Complete=false },
+            //new Task {TaskId=5, TaskName="Fifth Task", DateDue="11/05/2017", Description="My fifth task", Duration=10.5, Important=true, Complete=false }
         };
 
 
@@ -25,48 +25,57 @@ namespace LikeIke.Controllers
             //Go to the Home/Index folder and throw it into the view.
             //list all of the tasks from the seed data and push it to the view
 
-            var _taskList = new TaskListViewModel
+            using(var taskContext = new LikeIkeContext())
             {
-                TaskList = TaskList.Select(p => new TaskViewModel
+                var _taskList = new TaskListViewModel
                 {
-                    TaskId = p.TaskId,
-                    TaskName = p.TaskName,
-                    Duration = p.Duration,
-                    Description = p.Description,
-                    DateDue = p.DateDue,
-                    Important = p.Important,
-                    Complete = p.Complete
-                }).ToList()
-            };
+                    TaskList = taskContext.Task.Select(p => new TaskViewModel
+                    {
+                        TaskId = p.TaskId,
+                        TaskName = p.TaskName,
+                        Duration = p.Duration,
+                        Description = p.Description,
+                        DateDue = p.DateDue,
+                        Important = p.Important,
+                        Complete = p.Complete
+                    }).ToList()
+                };
 
-            return View(_taskList);
+                return View(_taskList);
+            }
+
+            
         }
 
         //Reviewing the details of a task
         public ActionResult TaskDetail(int? id)
         {
-            //search for a matching task from the TaskList list and store it in _task
-            var _task = TaskList.SingleOrDefault(t => t.TaskId == id);
-            //if there is a matching task then assign it to values to the viewModel to pass it to a view.
-            if(_task != null)
+            using(var taskContext = new LikeIkeContext())
             {
-                //create a new variable that will be a new TaskViewModel and assign the corresponding properties.
-                var _taskViewModel = new TaskViewModel
+                //search for a matching task from the TaskList list and store it in _task
+                var _task = taskContext.Task.SingleOrDefault(t => t.TaskId == id);
+                //if there is a matching task then assign it to values to the viewModel to pass it to a view.
+                if (_task != null)
                 {
-                    TaskId = _task.TaskId,
-                    TaskName = _task.TaskName,
-                    Duration = _task.Duration,
-                    Description = _task.Description,
-                    DateDue = _task.DateDue,
-                    Important = _task.Important,
-                    Complete = _task.Complete
+                    //create a new variable that will be a new TaskViewModel and assign the corresponding properties.
+                    var _taskViewModel = new TaskViewModel
+                    {
+                        TaskId = _task.TaskId,
+                        TaskName = _task.TaskName,
+                        Duration = _task.Duration,
+                        Description = _task.Description,
+                        DateDue = _task.DateDue,
+                        Important = _task.Important,
+                        Complete = _task.Complete
 
-                };
+                    };
 
-                ViewBag.Title = "Review a Task";
+                    ViewBag.Title = "Review a Task";
 
-                return View(_taskViewModel);
+                    return View(_taskViewModel);
+                }
             }
+            
 
             return new HttpNotFoundResult();
         }
@@ -77,9 +86,7 @@ namespace LikeIke.Controllers
         public ActionResult AddTask()
         {
             var _addTaskViewModel = new TaskViewModel();
-            //{
-            //    _addTaskViewModel.DateDue = DateTime.Today.ToShortDateString();
-            //};
+
 
             ViewBag.Mode = "Add";
 
@@ -92,21 +99,24 @@ namespace LikeIke.Controllers
         [HttpPost]
         public ActionResult TaskAdd(TaskViewModel _taskAddViewModel)
         {
-            //var nextId = TaskList.Count()+1; you cant just count the number of elements because Task id is assigned from the highest number
-            var nextId = TaskList.Max(t => t.TaskId) + 1;
-            var _taskAdd = new Task
+            using(var taskContext = new LikeIkeContext())
             {
-                TaskId = nextId,
-                TaskName = _taskAddViewModel.TaskName,
-                DateDue = _taskAddViewModel.DateDue,
-                Description = _taskAddViewModel.Description,
-                Duration = _taskAddViewModel.Duration,
-                Important = _taskAddViewModel.Important,
-                Complete = _taskAddViewModel.Complete
-            };
+                //var nextId = TaskList.Count()+1; you cant just count the number of elements because Task id is assigned from the highest number
+                //var nextId = taskContext.Task.Max(t => t.TaskId) + 1;
+                var _taskAdd = new Task
+                {
+                    //TaskId = nextId,
+                    TaskName = _taskAddViewModel.TaskName,
+                    DateDue = _taskAddViewModel.DateDue,
+                    Description = _taskAddViewModel.Description,
+                    Duration = _taskAddViewModel.Duration,
+                    Important = _taskAddViewModel.Important,
+                    Complete = _taskAddViewModel.Complete
+                };
 
-            TaskList.Add(_taskAdd);
-
+                taskContext.Task.Add(_taskAdd);
+                taskContext.SaveChanges();                
+            }
 
             return RedirectToAction("Index");
         }
@@ -115,23 +125,27 @@ namespace LikeIke.Controllers
 
         public ActionResult EditTask(int id)
         {
-            var _task = TaskList.SingleOrDefault(t => t.TaskId == id);
-
-            if(_task != null)
+            using(var taskContext = new LikeIkeContext())
             {
-                var _editTaskViewModel = new TaskViewModel
-                {
-                    TaskId = _task.TaskId,
-                    TaskName = _task.TaskName,
-                    DateDue = _task.DateDue,
-                    Description = _task.Description,
-                    Duration = _task.Duration,
-                    Important = _task.Important,
-                    Complete = _task.Complete
-                };
+                var _task = taskContext.Task.SingleOrDefault(t => t.TaskId == id);
 
-                return View("AddEditTask", _editTaskViewModel);
+                if (_task != null)
+                {
+                    var _editTaskViewModel = new TaskViewModel
+                    {
+                        TaskId = _task.TaskId,
+                        TaskName = _task.TaskName,
+                        DateDue = _task.DateDue,
+                        Description = _task.Description,
+                        Duration = _task.Duration,
+                        Important = _task.Important,
+                        Complete = _task.Complete
+                    };
+
+                    return View("AddEditTask", _editTaskViewModel);
+                }
             }
+            
 
             return new HttpNotFoundResult();
         }
@@ -141,20 +155,26 @@ namespace LikeIke.Controllers
         [HttpPost]
         public ActionResult TaskEdit(TaskViewModel _taskEditViewModel)
         {
-            var _task = TaskList.SingleOrDefault(t => t.TaskId == _taskEditViewModel.TaskId);
-
-            if(_task != null)
+            using(var taskContext = new LikeIkeContext())
             {
-                //if there is a match set the values equal to the edit fields in the view model.
-                _task.TaskName = _taskEditViewModel.TaskName;
-                _task.DateDue = _taskEditViewModel.DateDue;
-                _task.Description = _taskEditViewModel.Description;
-                _task.Duration = _taskEditViewModel.Duration;
-                _task.Important = _taskEditViewModel.Important;
-                _task.Complete = _taskEditViewModel.Complete;
+                var _task = taskContext.Task.SingleOrDefault(t => t.TaskId == _taskEditViewModel.TaskId);
 
-                return RedirectToAction("Index");
+                if (_task != null)
+                {
+                    //if there is a match set the values equal to the edit fields in the view model.
+                    _task.TaskName = _taskEditViewModel.TaskName;
+                    _task.DateDue = _taskEditViewModel.DateDue;
+                    _task.Description = _taskEditViewModel.Description;
+                    _task.Duration = _taskEditViewModel.Duration;
+                    _task.Important = _taskEditViewModel.Important;
+                    _task.Complete = _taskEditViewModel.Complete;
+
+                    taskContext.SaveChanges();
+
+                    return RedirectToAction("Index");
+                }
             }
+            
 
             return new HttpNotFoundResult();
         }
@@ -164,13 +184,16 @@ namespace LikeIke.Controllers
         [HttpPost]
         public ActionResult DeleteTask(TaskViewModel _taskViewModel)
         {
-            var _task = TaskList.SingleOrDefault(t => t.TaskId == _taskViewModel.TaskId);
-
-            if (_task != null)
+            using(var taskContext = new LikeIkeContext())
             {
-                TaskList.Remove(_task);
-                return RedirectToAction("Index");
-               
+                var _task = taskContext.Task.SingleOrDefault(t => t.TaskId == _taskViewModel.TaskId);
+
+                if (_task != null)
+                {
+                    taskContext.Task.Remove(_task);
+                    taskContext.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
 
             return new HttpNotFoundResult();
@@ -179,14 +202,18 @@ namespace LikeIke.Controllers
         [HttpPost]
         public ActionResult CompleteTask(TaskViewModel _taskViewModel)
         {
-            var _task = TaskList.SingleOrDefault(t => t.TaskId == _taskViewModel.TaskId);
-
-            if(_task != null)
+            using(var taskContext = new LikeIkeContext())
             {
-                _task.Complete = true;
+                var _task = taskContext.Task.SingleOrDefault(t => t.TaskId == _taskViewModel.TaskId);
 
-                return RedirectToAction("Index");
+                if (_task != null)
+                {
+                    _task.Complete = true;
+                    taskContext.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
+            
 
             return new HttpNotFoundResult();
         }
@@ -198,16 +225,21 @@ namespace LikeIke.Controllers
         {
             //from the modal update the parameters of each task. to complete if their corresponding checkbox is checked.
             //from the modal the tasklist is passed into this action          
-
-            for (var i=0; i<TaskList.Count; i++)
+            using(var taskContext = new LikeIkeContext())
             {
-                if(TaskList[i].Complete == true)
+                
+                for (var i = 0; i < taskContext.Task.Count(); i++)
                 {
-                    TaskList.Remove(TaskList[i]);
+                    if (taskContext.Task.ElementAt(i).Complete == true)
+                    {
+                        taskContext.Task.Remove(taskContext.Task.ElementAt(i));
+                        taskContext.SaveChanges();
+                    }
                 }
-            }
 
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            }
+            
         }
 
         //STOCK LANGUAGE FROM MVC TEMPLATE IS BELOW
