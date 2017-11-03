@@ -151,6 +151,7 @@ namespace LikeIke.Controllers
                 _task.Description = _taskEditViewModel.Description;
                 _task.Duration = _taskEditViewModel.Duration;
                 _task.Important = _taskEditViewModel.Important;
+                _task.Complete = _taskEditViewModel.Complete;
 
                 return RedirectToAction("Index");
             }
@@ -173,6 +174,40 @@ namespace LikeIke.Controllers
             }
 
             return new HttpNotFoundResult();
+        }
+
+        [HttpPost]
+        public ActionResult CompleteTask(TaskViewModel _taskViewModel)
+        {
+            var _task = TaskList.SingleOrDefault(t => t.TaskId == _taskViewModel.TaskId);
+
+            if(_task != null)
+            {
+                _task.Complete = true;
+
+                return RedirectToAction("Index");
+            }
+
+            return new HttpNotFoundResult();
+        }
+        
+        
+        //CRUD OPERATION: saving the progress means that we are going to delete the tasks that have a check mark on them. Take the TaskList, check if the complete value is =true. If it is true then remove the task from the TaskList list.
+        [HttpPost]
+        public ActionResult SaveByDelete()
+        {
+            //from the modal update the parameters of each task. to complete if their corresponding checkbox is checked.
+            //from the modal the tasklist is passed into this action          
+
+            for (var i=0; i<TaskList.Count; i++)
+            {
+                if(TaskList[i].Complete == true)
+                {
+                    TaskList.Remove(TaskList[i]);
+                }
+            }
+
+            return RedirectToAction("Index");
         }
 
         //STOCK LANGUAGE FROM MVC TEMPLATE IS BELOW

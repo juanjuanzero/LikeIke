@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Home Page";
-}
+    }
 
 <div class=" col-md-12 row">
     
@@ -10,14 +10,18 @@
 
     @for (var i = 0; i < Model.TaskList.Count; i++)
     {
+        
         <div class="col-sm-12 row">
             <div class=" col-sm-8 checkbox">
-                <label><input type="checkbox" value="">@Model.TaskList[i].TaskName</label>
+                <a class="" data-toggle="modal" href="@("#CompleteTaskModal"+i)">
+                    <span class="btn glyphicon @(Model.TaskList[i].Complete? "glyphicon-ok btn-success":"glyphicon-unchecked btn-danger")"></span>
+                </a>
+                @Model.TaskList[i].TaskName
             </div>
             <div class="col-sm-4 btn-group">
                 @Html.ActionLink("Review", "TaskDetail", new {id = Model.TaskList[i].TaskId }, new { @class="btn btn-info btn-sm"})
                 @Html.ActionLink("Edit","EditTask", new { id = Model.TaskList[i].TaskId }, new { @class = "btn btn-primary btn-sm"})
-                <a class = "btn btn-danger btn-sm"data-toggle="modal" href="@("#DeleteTaskModal" + i)">Del</a>
+                <a class = "btn btn-danger btn-sm" data-toggle="modal" href="@("#DeleteTaskModal" + i)">Delete</a>
                 <div id="@("DeleteTaskModal"+i)" class="modal fade" role="dialog">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -46,11 +50,62 @@
             </div>
             <hr />
         </div>
+
+   
+        <div id="@("CompleteTaskModal"+i)" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    @using (Html.BeginForm("CompleteTask", "Home"))
+                     {
+                        <input type="hidden" value="@(Model.TaskList[i].TaskId)" name="TaskId" />
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Complete Task</h4>
+                        </div>
+
+                        <div class="modal-body">
+                            Have you completed the @Model.TaskList[i].TaskName task?
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Yes, Completed</button>
+                            @Html.ActionLink("Review", "TaskDetail", new { id = Model.TaskList[i].TaskId }, new { @class = "btn btn-info" })
+                            @Html.ActionLink("Edit", "EditTask", new { id = Model.TaskList[i].TaskId }, new { @class = "btn btn-primary btn-sm" })
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        </div>
+                     }
+                </div>
+            </div>
+        </div>
     }
 
     @*Save Progress: This button will delete tasks that have a mark of complete*@
+<a class="btn btn-success btn-sm" data-toggle="modal" href="#SaveByDeleteTaskModal">Save Progress</a>
+    <div id="SaveByDeleteTaskModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                @using (Html.BeginForm("SaveByDelete", "Home"))
+                {
 
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Save your Progress</h4>
+                    </div>
 
+                    <div class="modal-body">
+                        Would you like to save your progress? We'll go ahead and delete the tasks you marked compete.
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <button type="submit" class="btn btn-primary">Yes, I am done.</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
 </div>
 
 @*Added the ATmodel connection to connect the HomeController with the Index.cshtml page. It is taking the TaskListViewModel which is what is being passed into the view*@
