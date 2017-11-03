@@ -154,6 +154,22 @@ namespace LikeIke.Controllers
             return new HttpNotFoundResult();
         }
 
+        //CRUD Operation DELETING FILES: This would be a deletion by clicking the delete button from the Task Manager (Index) page. When the delete button is clicked a modal pops up to get a TaskViewModel object with a matching id. Then when you click this method is called and takes in the TaskViewModel object. It would take in a TaskViewModel obj from a matching item in the TaskList and then once it is found it is deleted from the list. We will be passing in a an input with a name of TaskId and that should match the viewModel's parameter
+        
+        [HttpPost]
+        public ActionResult DeleteTask(TaskViewModel _taskViewModel)
+        {
+            var _task = TaskList.SingleOrDefault(t => t.TaskId == _taskViewModel.TaskId);
+
+            if (_task != null)
+            {
+                TaskList.Remove(_task);
+                return RedirectToAction("Index");
+               
+            }
+
+            return new HttpNotFoundResult();
+        }
 
 
         //Open the AddEditTask cshtml task when this is called.
