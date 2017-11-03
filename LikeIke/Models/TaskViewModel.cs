@@ -15,5 +15,6 @@ namespace LikeIke.Models
         public double Duration { get; set; }
         public string DateDue { get; set; }
         public bool Important { get; set; }
+        public bool Complete { get; set; }
     }
 }

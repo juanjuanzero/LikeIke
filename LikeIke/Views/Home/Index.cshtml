@@ -17,9 +17,7 @@
             <div class="col-sm-4 btn-group">
                 @Html.ActionLink("Review", "TaskDetail", new {id = Model.TaskList[i].TaskId }, new { @class="btn btn-info btn-sm"})
                 @Html.ActionLink("Edit","EditTask", new { id = Model.TaskList[i].TaskId }, new { @class = "btn btn-primary btn-sm"})
-                <button type="button" class="btn btn-danger btn-sm">Del</button>
                 <a class = "btn btn-danger btn-sm"data-toggle="modal" href="@("#DeleteTaskModal" + i)">Del</a>
-
                 <div id="@("DeleteTaskModal"+i)" class="modal fade" role="dialog">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -50,6 +48,7 @@
         </div>
     }
 
+    @*Save Progress: This button will delete tasks that have a mark of complete*@
 
 
 </div>

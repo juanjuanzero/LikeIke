@@ -12,14 +12,14 @@ namespace LikeIke.Controllers
         //Seed data
         public static List<Task> TaskList = new List<Task>
         {
-            new Task {TaskId=1, TaskName="First Task", DateDue="10/30/2017", Description="My first task", Duration=10.5 , Important=true},
-            new Task {TaskId=2, TaskName="Second Task", DateDue="11/01/2017", Description="My second task", Duration=10.5,  Important=true },
-            new Task {TaskId=3, TaskName="Third Task", DateDue="11/03/2017", Description="My third task", Duration=10.5,  Important=true },
-            new Task {TaskId=4, TaskName="Fourth Task", DateDue="11/04/2017", Description="My fourt task", Duration=10.5 ,  Important=true},
-            new Task {TaskId=5, TaskName="Fifth Task", DateDue="11/05/2017", Description="My fifth task", Duration=10.5, Important=true }
+            new Task {TaskId=1, TaskName="First Task", DateDue="10/30/2017", Description="My first task", Duration=10.5 , Important=true, Complete=false},
+            new Task {TaskId=2, TaskName="Second Task", DateDue="11/01/2017", Description="My second task", Duration=10.5,  Important=true, Complete=false },
+            new Task {TaskId=3, TaskName="Third Task", DateDue="11/03/2017", Description="My third task", Duration=10.5,  Important=true, Complete=true },
+            new Task {TaskId=4, TaskName="Fourth Task", DateDue="11/04/2017", Description="My fourt task", Duration=10.5 ,  Important=true, Complete=false },
+            new Task {TaskId=5, TaskName="Fifth Task", DateDue="11/05/2017", Description="My fifth task", Duration=10.5, Important=true, Complete=false }
         };
 
-        //STOCK LANGUAGE FROM MVC TEMPLATE IS BELOW
+
         public ActionResult Index()
         {
             //Go to the Home/Index folder and throw it into the view.
@@ -34,7 +34,8 @@ namespace LikeIke.Controllers
                     Duration = p.Duration,
                     Description = p.Description,
                     DateDue = p.DateDue,
-                    Important = p.Important
+                    Important = p.Important,
+                    Complete = p.Complete
                 }).ToList()
             };
 
@@ -57,7 +58,8 @@ namespace LikeIke.Controllers
                     Duration = _task.Duration,
                     Description = _task.Description,
                     DateDue = _task.DateDue,
-                    Important = _task.Important
+                    Important = _task.Important,
+                    Complete = _task.Complete
 
                 };
 
@@ -90,8 +92,8 @@ namespace LikeIke.Controllers
         [HttpPost]
         public ActionResult TaskAdd(TaskViewModel _taskAddViewModel)
         {
-            var nextId = TaskList.Count()+1;
-
+            //var nextId = TaskList.Count()+1; you cant just count the number of elements because Task id is assigned from the highest number
+            var nextId = TaskList.Max(t => t.TaskId) + 1;
             var _taskAdd = new Task
             {
                 TaskId = nextId,
@@ -99,7 +101,8 @@ namespace LikeIke.Controllers
                 DateDue = _taskAddViewModel.DateDue,
                 Description = _taskAddViewModel.Description,
                 Duration = _taskAddViewModel.Duration,
-                Important = _taskAddViewModel.Important
+                Important = _taskAddViewModel.Important,
+                Complete = _taskAddViewModel.Complete
             };
 
             TaskList.Add(_taskAdd);
@@ -123,7 +126,8 @@ namespace LikeIke.Controllers
                     DateDue = _task.DateDue,
                     Description = _task.Description,
                     Duration = _task.Duration,
-                    Important = _task.Important
+                    Important = _task.Important,
+                    Complete = _task.Complete
                 };
 
                 return View("AddEditTask", _editTaskViewModel);
@@ -171,7 +175,7 @@ namespace LikeIke.Controllers
             return new HttpNotFoundResult();
         }
 
-
+        //STOCK LANGUAGE FROM MVC TEMPLATE IS BELOW
         //Open the AddEditTask cshtml task when this is called.
         public ActionResult AddEditTask()
         {
