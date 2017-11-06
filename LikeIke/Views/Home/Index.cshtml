@@ -1,87 +1,105 @@
 ﻿@model LikeIke.Models.TaskListViewModel
 
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Manage Tasks";
     }
 
-<div class=" col-md-12 row">
-    
-    <h2>Important Tasks</h2>
+<div class="">
+    <div class="">
+        <h3>Important Tasks</h3>        
+    </div>
+    <div class="custom_list">
+        @for (var i = 0; i < Model.TaskList.Count; i++)
+        {
 
-    @for (var i = 0; i < Model.TaskList.Count; i++)
-    {
-        
-        <div class="col-sm-12 row">
-            <div class=" col-sm-8 checkbox">
-                <a class="" data-toggle="modal" href="@("#CompleteTaskModal"+i)">
-                    <span class="btn glyphicon @(Model.TaskList[i].Complete? "glyphicon-ok btn-success":"glyphicon-unchecked btn-danger")"></span>
-                </a>
-                @Model.TaskList[i].TaskName
-            </div>
-            <div class="col-sm-4 btn-group">
-                @Html.ActionLink("Review", "TaskDetail", new {id = Model.TaskList[i].TaskId }, new { @class="btn btn-info btn-sm"})
-                @Html.ActionLink("Edit","EditTask", new { id = Model.TaskList[i].TaskId }, new { @class = "btn btn-primary btn-sm"})
-                <a class = "btn btn-danger btn-sm" data-toggle="modal" href="@("#DeleteTaskModal" + i)">Delete</a>
-                <div id="@("DeleteTaskModal"+i)" class="modal fade" role="dialog">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            @using(Html.BeginForm("DeleteTask", "Home"))
-                            {
-                                <input type="hidden" value="@(Model.TaskList[i].TaskId)" name="TaskId"/>
+            <div class=" _customTask">
 
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Delete Task</h4>
-                                </div>
-                                
-                                <div class="modal-body">
-                                    Are you sure you want to delete @Model.TaskList[i].TaskName task?
-                                </div>
-                                
-                                <div class="modal-footer">
-                                    @Html.ActionLink("Review", "TaskDetail", new { id = Model.TaskList[i].TaskId }, new { @class = "btn btn-info" })
-                                    <button type="submit" class="btn btn-primary">Yes, Delete it</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                </div>
-                            }
+                    <div class="row">    
+                        <div class="col-xs-1">
+                            <a class=" _customAnchor glyphicon btn @(Model.TaskList[i].Complete? "glyphicon-ok btn-success":"glyphicon-unchecked btn-danger")" data-toggle="modal" href="@("#CompleteTaskModal"+i)"></a>
                         </div>
+                        <div class="col-xs-11">
+                            <a class="_customAnchor" data-toggle="collapse" href="@("#CollapsedBtn"+i)">@Model.TaskList[i].TaskName</a>
+                            <div id="@("CollapsedBtn"+i)" class="collapse">
+                                <div class="">
+                                    @Html.ActionLink("Review Details", "TaskDetail", new { id = Model.TaskList[i].TaskId }, new { @class = "btn btn-info" })
+                                    @Html.ActionLink("Edit", "EditTask", new { id = Model.TaskList[i].TaskId }, new { @class = "btn btn-primary" })
+                                    <a class="btn btn-danger" data-toggle="modal" href="@("#DeleteTaskModal" + i)">Delete</a>
+                                </div>
+                            </div>
+                        </div>     
+                      
+                    </div>
+                
+                
+                    
+                    
+            </div>
+            <hr />
+            //MODALS BELOW
+
+            <div id="@("DeleteTaskModal"+i)" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        @using (Html.BeginForm("DeleteTask", "Home"))
+                        {
+                            <input type="hidden" value="@(Model.TaskList[i].TaskId)" name="TaskId" />
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Delete Task</h4>
+                            </div>
+
+                            <div class="modal-body">
+                                Are you sure you want to delete @Model.TaskList[i].TaskName task?
+                            </div>
+
+                            <div class="modal-footer">
+                                @Html.ActionLink("Review", "TaskDetail", new { id = Model.TaskList[i].TaskId }, new { @class = "btn btn-info" })
+                                <button type="submit" class="btn btn-primary">Yes, Delete it</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
-            <hr />
-        </div>
 
-   
-        <div id="@("CompleteTaskModal"+i)" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    @using (Html.BeginForm("CompleteTask", "Home"))
-                     {
-                        <input type="hidden" value="@(Model.TaskList[i].TaskId)" name="TaskId" />
+            <div id="@("CompleteTaskModal"+i)" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        @using (Html.BeginForm("CompleteTask", "Home"))
+                        {
+                            <input type="hidden" value="@(Model.TaskList[i].TaskId)" name="TaskId" />
 
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Complete Task</h4>
-                        </div>
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">@(Model.TaskList[i].Complete ? "Need to Make Changes to the Task?" : "Nice Job!")</h4>
+                            </div>
 
-                        <div class="modal-body">
-                            Have you completed the @Model.TaskList[i].TaskName task?
-                        </div>
+                            <div class="modal-body">
+                                @(Model.TaskList[i].Complete? "Are there any changes you'd like to make?": "Have you completed the task?")
+                                
+                            </div>
 
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-success">Yes, Completed</button>
-                            @Html.ActionLink("Review", "TaskDetail", new { id = Model.TaskList[i].TaskId }, new { @class = "btn btn-info" })
-                            @Html.ActionLink("Edit", "EditTask", new { id = Model.TaskList[i].TaskId }, new { @class = "btn btn-primary btn-sm" })
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        </div>
-                     }
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">@(Model.TaskList[i].Complete?"Yes, Make Changes": "Yes, Completed")</button>
+                                @Html.ActionLink("Review", "TaskDetail", new { id = Model.TaskList[i].TaskId }, new { @class = "btn btn-info" })
+                                @Html.ActionLink("Edit", "EditTask", new { id = Model.TaskList[i].TaskId }, new { @class = "btn btn-primary" })
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
-    }
+        }
+    </div>
 
     @*Save Progress: This button will delete tasks that have a mark of complete*@
-<a class="btn btn-success btn-sm" data-toggle="modal" href="#SaveByDeleteTaskModal">Save Progress</a>
+    <div class="row">
+        <span class="col-sm-10"></span>
+        <a class="btn btn-success col-sm-2" data-toggle="modal" href="#SaveByDeleteTaskModal">Save Progress</a>
+    </div>
+    
     <div id="SaveByDeleteTaskModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">

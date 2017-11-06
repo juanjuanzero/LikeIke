@@ -10,14 +10,14 @@ namespace LikeIke.Controllers
     public class HomeController : Controller
     {
         //Seed data
-        public static List<Task> TaskList = new List<Task>
-        {
-            //new Task {TaskId=1, TaskName="First Task", DateDue="10/30/2017", Description="My first task", Duration=10.5 , Important=true, Complete=false},
-            //new Task {TaskId=2, TaskName="Second Task", DateDue="11/01/2017", Description="My second task", Duration=10.5,  Important=true, Complete=false },
-            //new Task {TaskId=3, TaskName="Third Task", DateDue="11/03/2017", Description="My third task", Duration=10.5,  Important=true, Complete=true },
-            //new Task {TaskId=4, TaskName="Fourth Task", DateDue="11/04/2017", Description="My fourt task", Duration=10.5 ,  Important=true, Complete=false },
-            //new Task {TaskId=5, TaskName="Fifth Task", DateDue="11/05/2017", Description="My fifth task", Duration=10.5, Important=true, Complete=false }
-        };
+        //public static List<Task> TaskList = new List<Task>
+        //{
+        //    //new Task {TaskId=1, TaskName="First Task", DateDue="10/30/2017", Description="My first task", Duration=10.5 , Important=true, Complete=false},
+        //    //new Task {TaskId=2, TaskName="Second Task", DateDue="11/01/2017", Description="My second task", Duration=10.5,  Important=true, Complete=false },
+        //    //new Task {TaskId=3, TaskName="Third Task", DateDue="11/03/2017", Description="My third task", Duration=10.5,  Important=true, Complete=true },
+        //    //new Task {TaskId=4, TaskName="Fourth Task", DateDue="11/04/2017", Description="My fourt task", Duration=10.5 ,  Important=true, Complete=false },
+        //    //new Task {TaskId=5, TaskName="Fifth Task", DateDue="11/05/2017", Description="My fifth task", Duration=10.5, Important=true, Complete=false }
+        //};
 
 
         public ActionResult Index()
@@ -208,9 +208,21 @@ namespace LikeIke.Controllers
 
                 if (_task != null)
                 {
-                    _task.Complete = true;
-                    taskContext.SaveChanges();
-                    return RedirectToAction("Index");
+                    if(_task.Complete == false)
+                    {
+                        _task.Complete = true;
+                        taskContext.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        _task.Complete = false;
+                        taskContext.SaveChanges();
+
+                        return EditTask(_task.TaskId);
+                    }
+                    
+                    
                 }
             }
             

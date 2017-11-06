@@ -5,6 +5,7 @@
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
+    padding-top: 15px;
     padding-left: 15px;
     padding-right: 15px;
 }
@@ -22,3 +23,22 @@ select,
 textarea {
     max-width: 560px;
 }
+
+.custom_list
+{
+    padding: 10px;
+}
+
+._customTask{
+    padding:5px;
+}
+
+._customAnchor {
+    height: 100%;
+    padding: 10px;
+    display: inline-block; 
+    word-wrap:break-word;
+}
+
+
+

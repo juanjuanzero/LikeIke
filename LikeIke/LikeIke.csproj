@@ -159,6 +159,10 @@
     <Compile Include="Migrations\201711031756383_InitialMigration.Designer.cs">
       <DependentUpon>201711031756383_InitialMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711042006548_TaskDateMigration.cs" />
+    <Compile Include="Migrations\201711042006548_TaskDateMigration.Designer.cs">
+      <DependentUpon>201711042006548_TaskDateMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Task.cs" />
     <Compile Include="Models\TaskListViewModel.cs" />
@@ -224,6 +228,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201711031756383_InitialMigration.resx">
       <DependentUpon>201711031756383_InitialMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711042006548_TaskDateMigration.resx">
+      <DependentUpon>201711042006548_TaskDateMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
