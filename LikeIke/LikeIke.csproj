@@ -163,6 +163,10 @@
     <Compile Include="Migrations\201711042006548_TaskDateMigration.Designer.cs">
       <DependentUpon>201711042006548_TaskDateMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711062255412_AddUrgentDataField.cs" />
+    <Compile Include="Migrations\201711062255412_AddUrgentDataField.Designer.cs">
+      <DependentUpon>201711062255412_AddUrgentDataField.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Task.cs" />
     <Compile Include="Models\TaskListViewModel.cs" />
@@ -204,7 +208,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\AddEditTask.cshtml" />
     <Content Include="Views\Home\TaskDetail.cshtml" />
@@ -231,6 +234,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711042006548_TaskDateMigration.resx">
       <DependentUpon>201711042006548_TaskDateMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711062255412_AddUrgentDataField.resx">
+      <DependentUpon>201711062255412_AddUrgentDataField.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

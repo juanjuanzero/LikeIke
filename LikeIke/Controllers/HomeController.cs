@@ -37,7 +37,8 @@ namespace LikeIke.Controllers
                         Description = p.Description,
                         DateDue = p.DateDue,
                         Important = p.Important,
-                        Complete = p.Complete
+                        Complete = p.Complete,
+                        Urgent = p.Urgent
                     }).ToList()
                 };
 
@@ -66,7 +67,8 @@ namespace LikeIke.Controllers
                         Description = _task.Description,
                         DateDue = _task.DateDue,
                         Important = _task.Important,
-                        Complete = _task.Complete
+                        Complete = _task.Complete,
+                        Urgent = _task.Urgent
 
                     };
 
@@ -111,7 +113,8 @@ namespace LikeIke.Controllers
                     Description = _taskAddViewModel.Description,
                     Duration = _taskAddViewModel.Duration,
                     Important = _taskAddViewModel.Important,
-                    Complete = _taskAddViewModel.Complete
+                    Complete = _taskAddViewModel.Complete,
+                    Urgent = _taskAddViewModel.Urgent
                 };
 
                 taskContext.Task.Add(_taskAdd);
@@ -139,7 +142,8 @@ namespace LikeIke.Controllers
                         Description = _task.Description,
                         Duration = _task.Duration,
                         Important = _task.Important,
-                        Complete = _task.Complete
+                        Complete = _task.Complete,
+                        Urgent = _task.Urgent
                     };
 
                     return View("AddEditTask", _editTaskViewModel);
@@ -168,6 +172,7 @@ namespace LikeIke.Controllers
                     _task.Duration = _taskEditViewModel.Duration;
                     _task.Important = _taskEditViewModel.Important;
                     _task.Complete = _taskEditViewModel.Complete;
+                    _task.Urgent = _taskEditViewModel.Urgent;
 
                     taskContext.SaveChanges();
 
@@ -239,15 +244,23 @@ namespace LikeIke.Controllers
             //from the modal the tasklist is passed into this action          
             using(var taskContext = new LikeIkeContext())
             {
-                
-                for (var i = 0; i < taskContext.Task.Count(); i++)
+                //Calling the Where query on the TaskContext Task and looking for a function that returns a bool.
+                var tasksToRemove = taskContext.Task.Where(t => t.Complete).ToList();
+
+                for (var i = 0; i < tasksToRemove.Count() ; i++)
                 {
-                    if (taskContext.Task.ElementAt(i).Complete == true)
-                    {
-                        taskContext.Task.Remove(taskContext.Task.ElementAt(i));
-                        taskContext.SaveChanges();
-                    }
+                    taskContext.Task.Remove(tasksToRemove[i]);
+                    taskContext.SaveChanges();
                 }
+                
+                //for (var i = 0; i < taskContext.Task.Count(); i++)
+                //{
+                //    if (taskContext.Task.ElementAt(i).Complete == true)
+                //    {
+                //        taskContext.Task.Remove(taskContext.Task.ElementAt(i));
+                //        taskContext.SaveChanges();
+                //    }
+                //}
 
                 return RedirectToAction("Index");
             }

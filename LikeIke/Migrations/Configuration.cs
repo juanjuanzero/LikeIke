@@ -17,11 +17,11 @@ namespace LikeIke.Migrations
         {
             context.Task.AddOrUpdate(
                 p => p.TaskId,
-                new Task { TaskId = 1, TaskName = "First Task", DateDue = "10/30/2017", Description = "My first task", Duration = 10.5, Important = true, Complete = false },
-                new Task { TaskId = 2, TaskName = "Second Task", DateDue = "11/01/2017", Description = "My second task", Duration = 10.5, Important = true, Complete = false },
-                new Task { TaskId = 3, TaskName = "Third Task", DateDue = "11/03/2017", Description = "My third task", Duration = 10.5, Important = true, Complete = true },
-                new Task { TaskId = 4, TaskName = "Fourth Task", DateDue = "11/04/2017", Description = "My fourt task", Duration = 10.5, Important = true, Complete = false },
-                new Task { TaskId = 5, TaskName = "Fifth Task", DateDue = "11/05/2017", Description = "My fifth task", Duration = 10.5, Important = true, Complete = false }
+                new Task { TaskId = 1, TaskName = "First Task", DateDue = "10/30/2017", Description = "My first task", Duration = 10.5, Important = true, Complete = false, Urgent = false },
+                new Task { TaskId = 2, TaskName = "Second Task", DateDue = "11/01/2017", Description = "My second task", Duration = 10.5, Important = true, Complete = false, Urgent = false },
+                new Task { TaskId = 3, TaskName = "Third Task", DateDue = "11/03/2017", Description = "My third task", Duration = 10.5, Important = true, Complete = true, Urgent = false },
+                new Task { TaskId = 4, TaskName = "Fourth Task", DateDue = "11/04/2017", Description = "My fourt task", Duration = 10.5, Important = true, Complete = false, Urgent = false },
+                new Task { TaskId = 5, TaskName = "Fifth Task", DateDue = "11/05/2017", Description = "My fifth task", Duration = 10.5, Important = true, Complete = false, Urgent = false }
                     );
 
             //  This method will be called after migrating to the latest version.
