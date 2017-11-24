@@ -10,15 +10,20 @@ namespace LikeIke.Models
     {
         //properties for tasks yo!
         public int TaskId { get; set; }
-        [Required]
+        //[Required]
         [Display(Name ="Task Name")]
-        [StringLength(80,ErrorMessage ="The name of the Task cannot be longer than 80 characters")]
+        //[StringLength(80,ErrorMessage ="The name of the Task cannot be longer than 80 characters")]
         public string TaskName { get; set; }
         public string Description { get; set; }
-        [Range(0,40,ErrorMessage ="The length of time to do this cannot not be longer than 40 hrs.")]
+
+        //[Range(0,40,ErrorMessage ="The length of time to do this cannot not be longer than 40 hrs.")]
         public double Duration { get; set; }
+
+        //[DataType(DataType.Date)]
         [Display(Name ="Due Date")]
-        public string DateDue { get; set; }
+        [DisplayFormat(DataFormatString ="{0:yyyy-mm-dd}")]
+        public DateTime DateDue { get; set; }
+
         public bool Important { get; set; }
         public bool Complete { get; set; }
         public bool Urgent { get; set; }
