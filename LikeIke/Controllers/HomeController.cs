@@ -87,7 +87,7 @@ namespace LikeIke.Controllers
 
         public ActionResult AddTask()
         {
-            var _addTaskViewModel = new TaskViewModel();
+            var _addTaskViewModel = new TaskViewModel() { DateDue = DateTime.Now };
 
 
             ViewBag.Mode = "Add";
