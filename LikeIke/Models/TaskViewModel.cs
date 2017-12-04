@@ -10,9 +10,10 @@ namespace LikeIke.Models
     {
         ////properties for tasks yo. the view model will be passed into the the AddEditTask View under the Home folder. the TaskId is declared nullable with the "?" since there is an instance where we might not get a TaskId.
         //[Required]
-        [Display(Name = "Task Name")]
-        //[StringLength(80, ErrorMessage = "The name of the Task cannot be longer than 80 characters")]
         public int? TaskId { get; set; }
+
+        [Display(Name = "Task Name")]
+        [StringLength(80, ErrorMessage = "The name of the Task cannot be longer than 80 characters")]
         public string TaskName { get; set; }
         public string Description { get; set; }
 
@@ -20,8 +21,8 @@ namespace LikeIke.Models
         public double Duration { get; set; }
 
         [Display(Name = "Due Date")]
-        //[DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString ="{0:yyyy-MM-dd}")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString ="{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime DateDue { get; set; }
         public bool Important { get; set; }
         public bool Complete { get; set; }
